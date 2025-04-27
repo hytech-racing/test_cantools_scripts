@@ -10,7 +10,7 @@ from enum import Enum
 bus1 = can.Bus(channel="can0", interface='socketcan')
 
 def main():
-    db = cantools.database.load_file("hytech_156.dbc")
+    db = cantools.database.load_file("hytech_159.dbc")
     acu_ok = db.get_message_by_name("ACU_OK")
 
     bms_msg_00 = acu_ok.encode({'bms_ok': 0, 'imd_ok': 0})
