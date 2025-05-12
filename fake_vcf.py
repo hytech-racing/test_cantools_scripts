@@ -14,8 +14,8 @@ def main():
     pedals_system = db.get_message_by_name("PEDALS_SYSTEM_DATA")
     dash_input = db.get_message_by_name("DASH_INPUT")
 
-    pedals_brake_msg = pedals_system.encode({'brake_pedal': 0,
-                                     'accel_pedal': 0.01,
+    pedals_brake_msg = pedals_system.encode({'brake_pedal': 0.3,
+                                     'accel_pedal': 0,
                                      'implaus_exceeded_max_duration': False,
                                      'brake_accel_implausibility': False,
                                      'mechanical_brake_active': False,
@@ -53,11 +53,9 @@ def main():
         msg = can.Message(arbitration_id=dash_input.frame_id, is_extended_id=False, data = dash_msg)
         bus1.send(msg)
 
-        if not recv:
-            print("No messages received")
-        elif inverter_on:
+
+        if inverter_on:
             print("Inverters are ON")
-            time.sleep(1.0)
             break
         else:
             print("Inverters are OFF")
@@ -70,6 +68,7 @@ def main():
                 msg_info = db.get_message_by_frame_id(rcvd_message.arbitration_id)
 
                 if( (msg_info.name.lower() == "inv3_status")):
+                    print("inverter status recvd")
                     inverter_on = decoded_message["inverter_on"]
             except KeyError:
                 print(f"Message ID {rcvd_message.arbitration_id} not found in the DBC.")

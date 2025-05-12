@@ -11,25 +11,20 @@ bus1 = can.Bus(channel="can0", interface='socketcan')
 
 def main():
     inverter_on = False
-    recv = False
 
     db = cantools.database.load_file("hytech_159.dbc")
     setpoint = db.get_message_by_name("INV3_STATUS")
 
     error_reset = False
     initialized = False
-    while(1): 
-        # if recv:
-            # print("Mesg received")  
-
+    while(1):   
         if inverter_on:
-            print("Inverters are ON")
+            print(f"Inverters are ON")
         else:
-            print("Inverters are OFF")
+            print(f"Inverters are OFF")
 
         rcvd_message = bus1.recv(timeout=0.01)
         if(rcvd_message):
-            recv = True
             try:
                 
                 decoded_message = db.decode_message(rcvd_message.arbitration_id, rcvd_message.data)
