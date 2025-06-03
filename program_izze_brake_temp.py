@@ -4,6 +4,8 @@ import cantools
 
 bus1 = can.Bus(channel="can0", interface="socketcan")
 
+# TODO figure this out after connecting to the sensor
+current_frame_id = 1220
 
 def main():
 
@@ -11,12 +13,12 @@ def main():
     config_cmd = db.get_message_by_name("BRAKE_ROTOR_SENSOR_COMMAND")
 
     # FL = 1220 base, FR = 1225 base
-    base_id = 1220
+    set_base_id = 1220
     emissivity = 0.5
     config_cmd_msg = config_cmd.encode(
         {
             "brake_temp_sensor_prog_const": 30000,
-            "brake_temp_sensor_base_can_id": base_id,
+            "brake_temp_sensor_base_can_id": set_base_id,
             "brake_temp_sensor_emissivity": emissivity,
             "brake_temp_sensor_sampling_freq": 7,
             "brake_temp_sensor_ch_setting": 80,
@@ -24,7 +26,6 @@ def main():
         }
     )
 
-    current_frame_id = 1220
 
     while 1:
         msg = can.Message(
